@@ -37,7 +37,7 @@ export function StoreProvider({ children }: { children: any }) {
         if (!IDL) {
           throw "IDL File Required";
         }
-        if (!process.env.PROGRAM_ID) {
+        if (!process.env.NEXT_PUBLIC_PROGRAM_ID) {
           throw "ProgramID Required";
         }
 
