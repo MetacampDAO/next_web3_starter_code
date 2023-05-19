@@ -1,16 +1,5 @@
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import {
-  CTAButton,
-  CTAContainer,
-  CTAInfoContainer,
-  HomeContainer,
-  InfoDataContainer,
-  MintInfoContainer,
-  MintInfoData,
-  MintInfoLeftContainer,
-  MintInfosContainer,
-  MintInfoTitle,
-} from "@/styles/home";
+import { CTAContainer, HomeContainer } from "@/styles/home";
 import { useEffect, useState } from "react";
 import { PublicKey } from "@solana/web3.js";
 import { useStoreContext } from "@/utils/Store";
