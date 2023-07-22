@@ -17,7 +17,7 @@ interface StoreConfig {
 }
 
 const StoreContext = createContext<StoreConfig>({
-  programClient: CustomProgram,
+  programClient: null,
   getCustomPda: async () => {},
   getCustomPdaWithFilter: async () => {},
   signAndSendTransaction: async () => "",
@@ -53,6 +53,14 @@ export function StoreProvider({ children }: { children: any }) {
               IDL as CustomProgram,
               process.env.PROGRAM_ID!,
               provider
+            );
+          setProgramClient(customProgram);
+        } else {
+          const customProgram: anchor.Program<CustomProgram> =
+            new anchor.Program<CustomProgram>(
+              IDL as CustomProgram,
+              process.env.NEXT_PUBLIC_PROGRAM_ID!,
+              { connection }
             );
           setProgramClient(customProgram);
         }
