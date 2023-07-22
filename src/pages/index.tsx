@@ -11,7 +11,7 @@ export default function Home() {
 
   return (
     <HomeContainer>
-      <CTAContainer>{programClient.provider.programId.toString()}</CTAContainer>
+      <CTAContainer>{programClient.programId.toString()}</CTAContainer>
     </HomeContainer>
   );
 }

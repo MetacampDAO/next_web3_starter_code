@@ -6,7 +6,7 @@ import { Keypair, PublicKey, Transaction } from "@solana/web3.js";
 import { CustomProgram, IDL } from "./idl/customProgram";
 
 interface StoreConfig {
-  programClient: anchor.Program<CustomProgram>;
+  programClient: anchor.Program<CustomProgram> | null;
   getCustomPda: any;
   getCustomPdaWithFilter: any;
   signAndSendTransaction: (
@@ -51,20 +51,7 @@ export function StoreProvider({ children }: { children: any }) {
           const customProgram: anchor.Program<CustomProgram> =
             new anchor.Program<CustomProgram>(
               IDL as CustomProgram,
-              process.env.PROGRAM_ID,
-              provider
-            );
-          setProgramClient(customProgram);
-        } else {
-          const provider = new AnchorProvider(
-            connection,
-            AnchorProvider.defaultOptions()
-          );
-          anchor.setProvider(provider);
-          const customProgram: anchor.Program<CustomProgram> =
-            new anchor.Program<CustomProgram>(
-              IDL as CustomProgram,
-              process.env.PROGRAM_ID,
+              process.env.PROGRAM_ID!,
               provider
             );
           setProgramClient(customProgram);
@@ -97,13 +84,10 @@ export function StoreProvider({ children }: { children: any }) {
 
   const getCustomPda = async (
     userPubkey: PublicKey,
-    program = programClient
+    program = programClient!
   ) => {
     const [userInfo, _userInfoBump] = PublicKey.findProgramAddressSync(
-      [
-        Buffer.from(anchor.utils.bytes.utf8.encode("user")),
-        userPubkey.toBuffer(),
-      ],
+      [Buffer.from("user"), userPubkey.toBuffer()],
       program.programId
     );
     try {
@@ -126,7 +110,7 @@ export function StoreProvider({ children }: { children: any }) {
         },
       },
     ];
-    return await program.account.userStakeInfo.all(filter);
+    return await program!.account.userStakeInfo.all(filter);
   };
 
   return (
@@ -147,7 +131,7 @@ export const useStoreContext = () => {
   const context = useContext(StoreContext);
 
   return {
-    programClient: context.programClient,
+    programClient: context.programClient!,
     getCustomPda: context.getCustomPda,
     signAndSendTransaction: context.signAndSendTransaction,
   };
